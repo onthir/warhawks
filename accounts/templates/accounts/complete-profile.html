@@ -1,0 +1,22 @@
+{% extends 'warhawks/base.html' %}
+
+{% block title %}
+Complete Profile
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <h3>Complete Your Profile</h3>
+
+    <div class="form-group">
+        <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form }}
+            <br>
+            <input type="submit" class="btn btn-danger">
+        </form>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends 'warhawks/base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}
+{{ job.company }} - {{ job.position }}
+{% endblock %}
+
+{% block content %}
+<section class="banner-sec">
+<div class="container-fluid">
+    <h6 class="badge badge-primary">{{ job.j_type }}</h6>
+    <div class="comment-post">
+    <div class="row">
+        <div class="col-md-4">
+            <!-- image -->
+            <img class="img-fluid" src="{% static 'images/jobs.png' %}" alt="{{ job.company }}">
+        </div>
+        <div class="col-md-8">
+            <h3 class="blog-title">{{ job.company }}</h3>
+            <p>{{ job.description |safe|linebreaks }}</p>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                Message {{ job.posted_by }}
+              </button>
+        </div>
+ 
+    </div>
+</div>
+    <!-- comment form -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <form action="" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form }}
+                </form>
+            </div>
+        </div>
+    </div>
+
+        <!-- comments here -->
+        <div class="row">
+            <div class="col-md-6">
+                    {% for c in comments %}
+                <div class="comment-post">
+                    <a href="#">{{ c.user }}</a>
+                    <p>{{ c.comment |linebreaks }}</>
+                    <i>{{ c.date }}</i>
+                </div>
+                <br>
+                {% endfor %}
+            </div>
+        </div>
+</div>
+</section>
+
+<!-- comments on jobs here -->
+{% endblock %}

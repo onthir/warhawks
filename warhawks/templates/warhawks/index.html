@@ -1,0 +1,111 @@
+{% extends 'warhawks/base.html' %} {% load staticfiles %} {% block content %}
+
+<!--job listings  -->
+<section class="banner-sec">
+    <div class="container">
+        <h3>Job Listings</h3>
+        <div class="row">
+            {% for j in jobs %}
+            <div class="col-md-3">
+
+                <div class="card">
+                    <img class="img-fluid" src="{% static 'images/jobs.png' %}" alt="">
+                    <div class="card-img-overlay">
+                        <span class="badge badge-pill badge-danger">{{ j.j_type }}</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="news-title">
+                            <h2 class=" title-small">
+                                <a href="#">{{ j.company }} - {{ j.position }}</a>
+                            </h2>
+                        </div>
+                        <p class="card-text">
+                            <small class="text-time">
+                                <em>${{ j.salary }} /hr</em><br>
+                                <em>{{ j.hits }} hits</em>
+                            </small>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+</section>
+
+<!-- apartments -->
+<section class="banner-sec">
+        <div class="container">
+            <h3>Accomodations</h3>
+            <div class="row">
+                {% for a in apartments %}
+                <div class="col-md-3">
+    
+                    <div class="card">
+                        {% if a.picture %}
+                            <img src="{{ a.picture.url }}" alt="{{ a.location }}" class="img-fluid">
+                       {% else %}
+                        <img src="{% static 'images/apartment.gif' %}" alt="" class="img-fluid">
+                       {% endif %}
+                        <div class="card-img-overlay">
+                            <span class="badge badge-pill badge-danger">{{ a.a_type }}</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="news-title">
+                                <h2 class=" title-small">
+                                    <a href="#">{{ a.location }} - {{ j.position }}</a>
+                                </h2>
+                            </div>
+                            <p class="card-text">
+                                <small class="text-time">
+                                    <em>${{ a.price }} per month.</em><br>
+                                </small>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+    
+            </div>
+        </div>
+    </section>
+
+<!-- photo carousel -->
+
+<!-- recent blog posts -->
+<section class="banner-sec">
+    <div class="container">
+        <h3>Recent Blogs</h3>
+        <div class="row">
+            {% for r in four_blogs %}
+            <div class="col-md-3">
+                <div class="card">
+                    <img class="img-fluid" src="{{ r.image.url }}" alt="">
+                    <div class="card-img-overlay">
+                        <span class="badge badge-pill badge-danger">{{ r.category }}</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="news-title">
+                            <h2 class=" title-small">
+                                <a href="#">{{ r.title }}</a>
+                            </h2>
+                            <p>{{ r.description |safe|truncatechars:150 }}</p>
+                        </div>
+                        <p class="card-text">
+                            <strong>By: <i>{{ r.posted_by }}</i></strong>
+                            <small class="text-time">
+                                <em>{{ r.posted_on |timesince }}</em>
+                            </small>
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+</section>
+
+{% endblock %}

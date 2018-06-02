@@ -1,0 +1,46 @@
+{% extends 'warhawks/base.html' %} 
+{% load staticfiles %}
+
+{% block title %}
+Jobs
+{% endblock %}
+{% block content %}
+
+<!--job listings  -->
+<section class="banner-sec">
+        <div class="container">
+            <a href="{% url 'main:add_jobs' %}" class="btn btn-danger">Add Jobs</a>
+            <br>
+            <h3>Job Listings</h3>
+            <div class="row">
+                {% for j in jobs %}
+                <div class="col-md-3">
+    
+                    <div class="card">
+                        <img class="img-fluid" src="{% static 'images/jobs.png' %}" alt="">
+                        <div class="card-img-overlay">
+                            <span class="badge badge-pill badge-danger">{{ j.j_type }}</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="news-title">
+                                <h2 class=" title-small">
+                                    <a href="{% url 'main:job_details' j.slug %}">{{ j.company }} - {{ j.position }}</a>
+                                </h2>
+                            </div>
+                            <p class="card-text">
+                                <small class="text-time">
+                                    <em>${{ j.salary }} /hr</em><br>
+                                    <em>{{ j.hits }} hits</em>
+                                </small>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+    
+            </div>
+        </div>
+    </section>
+    
+
+{% endblock %}

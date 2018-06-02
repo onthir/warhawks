@@ -1,0 +1,20 @@
+{% extends 'warhawks/base.html' %}
+
+{% block title %}
+Add Apartment
+{% endblock %}
+
+{% block content %}
+
+<div class="contaier">
+    <h3>Add Apartment</h3>
+    <div class="form-group">
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <br>
+            <input type="submit" class="btn btn-warning" value="Add Apartment">
+        </form>
+    </div>
+</div>
+{% endblock %}

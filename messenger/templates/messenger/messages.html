@@ -1,0 +1,26 @@
+{% extends 'warhawks/base.html' %}
+
+{% block title %}
+Messages
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <h1>Unread Messsages</h1>
+    {% for u in unread %}
+        <li>{{ u.title }}</li>
+        <li>{{ u.date }}</li>
+        <li><a href="#">Mark as Read</a></li>
+    {% endfor %}
+</div>
+
+<div class="container">
+    <h1>Older Messsages</h1>
+    {% for u in read %}
+        <li>{{ u.title }}</li>
+        <li>{{ u.date }}</li>
+        <li><a href="#">Delete</a></li>
+    {% endfor %}
+</div>
+{% endblock %}

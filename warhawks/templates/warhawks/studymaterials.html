@@ -1,0 +1,50 @@
+{% extends 'warhawks/base.html' %}
+
+
+{% load staticfiles %}
+
+{% block title %}
+Study Materials
+{% endblock %}
+
+{% block content %}
+
+<!--job listings  -->
+<section class="banner-sec">
+        <div class="container">
+        
+            <a href="{% url 'main:add_study_materials' %}" class="btn btn-md btn-danger">Add Study Materials</a>
+            <h3>Study Materials</h3>
+            <div class="row">
+                {% for s in sm %}
+                <div class="col-md-3">
+    
+                    <div class="card">
+                        <img class="img-fluid" src="{% static 'images/files.png' %}" alt="">
+                        <div class="card-img-overlay">
+                            <span class="badge badge-pill badge-danger">{{ s.study_material_type }}</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="news-title">
+                                <h2 class=" title-small">
+                                    {{ s.title }} - <i><strong>{{ s.posted_by }}</strong> </i>
+                                    
+                                </h2>
+                            </div>
+                            <p class="card-text">
+                                <a href="{% url 'main:download' s.file_content %}"><i class="fa fa-download" data-toggle='tooltip' title="Download"></i></a><br>
+                                <small class="text-time">
+                                    <em>{{ s.downloads }} downloads</em><br>
+                                    <em><i>{{ s.date }}</i></em>
+                                </small>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+    
+            </div>
+        </div>
+    </section>
+    
+{% endblock %}

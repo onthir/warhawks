@@ -1,0 +1,95 @@
+{% extends 'warhawks/base.html' %}
+
+{% block title %}
+{{ post.title }}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h6>.</h6>
+        <div class="row">
+    
+            <div class="col-md-8" style="background:white;">
+    
+    
+                <h1 class="blog-title">
+                    {{ post.title }}
+                </h1>
+                {% if request.user.is_superuser %}
+                <a href="/admin/master/blog/{{ post.id }}/change/">Edit</a>
+                <a href="/admin/master/blog/{{ post.id }}/delete">Delete</a>
+    
+                {% endif %}
+                <i class="text-muted">
+                    <strong>Posted : {{ post.posted_on | timesince }} ago by
+                        <span style="color:coral;"> {{ post.posted_by }} </span>
+                        <br> Viewed: {{ post.hits }} times.
+                    </strong>
+                </i>
+                <br>
+    
+    
+                <!-- share links -->
+    
+                <div class="footer-social-icons">
+                    <ul class="social-icons">
+                        <li>
+                            <a href="http://www.facebook.com/sharer/sharer.php?u=http://bibekbhandari.herokuapp.com{{ request.get_full_path|urlencode }}"
+                                class="social-icon" target="_blank">
+                                <i class="fa fa-facebook"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://twitter.com/home?status=https://bibekbhandari.heokuapp.com{{ request.get_full_path|urlencode }}" class="social-icon"
+                                target="_blank">
+                                <i class="fa fa-twitter"></i>
+                            </a>
+                        </li>
+    
+                        <li>
+                            <a href="https://plus.google.com/share?url=http://bibekbhandari.herokuapp.com{{ request.get_full_path|urlencode }}" class="social-icon"
+                                target="_blank">
+                                <i class="fa fa-google-plus"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- end share -->
+                <br>
+                <br>
+                <!-- image of the post -->
+                <div class="text-center">
+                    <img class="img-fluid" src="{{ post.image.url }}" alt="{{ post.title }}" width="100%">
+                </div>
+                <p class="override-desc">{{ post.description | safe |linebreaks }}</p>
+    
+                <!-- share -->
+                <div class="footer-social-icons">
+                    <ul class="social-icons">
+                        <li>
+                            <a href="http://www.facebook.com/sharer/sharer.php?u=http://bibekbhandari.herokuapp.com{{ request.get_full_path|urlencode }}"
+                                class="social-icon" target="_blank">
+                                <i class="fa fa-facebook"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://twitter.com/home?status=https://bibekbhandari.heokuapp.com{{ request.get_full_path|urlencode }}" class="social-icon"
+                                target="_blank">
+                                <i class="fa fa-twitter"></i>
+                            </a>
+                        </li>
+    
+                        <li>
+                            <a href="https://plus.google.com/share?url=http://bibekbhandari.herokuapp.com{{ request.get_full_path|urlencode }}" class="social-icon"
+                                target="_blank">
+                                <i class="fa fa-google-plus"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+{% endblock %}

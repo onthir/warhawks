@@ -1,0 +1,23 @@
+{% extends 'warhawks/base.html' %}
+
+{% block content %}
+
+<div class="container">
+    <h3 class="text-center">Login To Your Account</h3>
+    <div class="form-group">
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+                <label for="username">Username</label>
+                <input type="text" name="username" class="form-control">
+
+                <label for="password">Password</label>
+                <input type="password" name="password" class="form-control">
+
+                <br>
+            <input type="submit" class="btn btn-danger">
+            <div class="text-mute">Don't have an account? <a href="{% url 'accounts:register' %}">Register</a></div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
