@@ -10,41 +10,35 @@ Study Materials
 {% block content %}
 
 <!--job listings  -->
-<section class="banner-sec">
+
         <div class="container">
-        
+            <br>
             <a href="{% url 'main:add_study_materials' %}" class="btn btn-md btn-danger">Add Study Materials</a>
             <h3>Study Materials</h3>
             <div class="row">
                 {% for s in sm %}
-                <div class="col-md-3">
-    
-                    <div class="card">
-                        <img class="img-fluid" src="{% static 'images/files.png' %}" alt="">
-                        <div class="card-img-overlay">
-                            <span class="badge badge-pill badge-danger">{{ s.study_material_type }}</span>
-                        </div>
-                        <div class="card-body">
-                            <div class="news-title">
-                                <h2 class=" title-small">
-                                    {{ s.title }} - <i><strong>{{ s.posted_by }}</strong> </i>
-                                    
-                                </h2>
+
+                    <div class="col s12 m4">
+                            <div class="card">
+                              <div class="card-image">
+                                {% if s.preview_picture %}
+                                <img src="{{ s.preview_picture.url }}" alt="{{ s.title }}">
+                                {% else %}
+                                <img src="{% static 'images/notes.jpg' %}" alt="{{ s.title }}">
+                                {% endif %}
+                                <a class="btn-floating btn-large halfway-fab waves-effect waves-light red" href="{% url 'main:download' s.file_content %}"><i class="material-icons">file_download</i></a>
+                              </div>
+                              <div class="card-content">
+                                <h5 class="card-title">{{ s.title }}</h5>
+                                <p>{{ s.description }}</p> 
+                                <h6> <span class="left white-text teal badge">{{ s.study_material_type }}</span></h6>
+                               
+                              </div>
                             </div>
-                            <p class="card-text">
-                                <a href="{% url 'main:download' s.file_content %}"><i class="fa fa-download" data-toggle='tooltip' title="Download"></i></a><br>
-                                <small class="text-time">
-                                    <em>{{ s.downloads }} downloads</em><br>
-                                    <em><i>{{ s.date }}</i></em>
-                                </small>
-                            </p>
-                        </div>
-                    </div>
-                </div>
+                          </div>
                 {% endfor %}
     
             </div>
         </div>
-    </section>
     
 {% endblock %}

@@ -1,58 +1,78 @@
 {% extends 'warhawks/base.html' %}
-
-{% load staticfiles %}
-
-{% block title %}
-{{ job.company }} - {{ job.position }}
-{% endblock %}
-
+ {% load staticfiles %}
+  {% block title %} {{ job.company }} - {{ job.position }} 
+  {% endblock %}
+  
 {% block content %}
-<section class="banner-sec">
-<div class="container-fluid">
-    <h6 class="badge badge-primary">{{ job.j_type }}</h6>
-    <div class="comment-post">
-    <div class="row">
-        <div class="col-md-4">
-            <!-- image -->
-            <img class="img-fluid" src="{% static 'images/jobs.png' %}" alt="{{ job.company }}">
-        </div>
-        <div class="col-md-8">
-            <h3 class="blog-title">{{ job.company }}</h3>
-            <p>{{ job.description |safe|linebreaks }}</p>
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                Message {{ job.posted_by }}
-              </button>
-        </div>
- 
-    </div>
+<!-- job details -->
+<div class="container">
+    <h5>
+        <strong>{{ job.company }}</strong>
+    </h5>
+    <i id="userlabel">{{ job.position }}</i>
+    <span class="badge blue white-text">${{ job.salary }}/hour</span>
+    <span class="badge red white-text">{{ job.j_type }}</span>
+    
+    <br><br>
+    {% if request.user == job.posted_by %}
+    <a href="{% url 'main:edit_job' job.slug %}" class="btn yellow">Edit</a>
+    <a href="{% url 'main:delete_job' job.slug %}" class="btn red">Delete</a>
+    {% endif %}
+    
+    <p>{{ job.description |linebreaks}}</p>
+    <i><strong>{{ job.posted_on }} - by {{ job.posted_by }}</strong></i>
 </div>
-    <!-- comment form -->
-    <div class="row">
-        <div class="col-md-6">
-            <div class="form-group">
-                <form action="" method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    {{ form }}
-                </form>
-            </div>
+
+<!-- comment input form -->
+<br> 
+    <div class="container">
+        
+        <form action="" method="post" enctype="multipart/form-data" id="commentForm">
+        
+        {% csrf_token %}
+            {{ form }}
+            <div class="texty"></div>
+
+        </form>
+
         </div>
     </div>
+<!-- comments on jobs here -->
+<div class="container">
+        <h5>Comments</h5>
+        {% for c in comments %}
+        {% if c.id|stringformat:"i" == notif_id %}
 
-        <!-- comments here -->
-        <div class="row">
-            <div class="col-md-6">
-                    {% for c in comments %}
-                <div class="comment-post">
+        <div class="col s12 m7" style="border: 2px solid teal;">
+            <div class="card">
+                <div class="card-stacked">
+                <div class="card-content">
                     <a href="#">{{ c.user }}</a>
-                    <p>{{ c.comment |linebreaks }}</>
+                    <p>{{ c.comment }}</p>
+                </div>
+                <div class="card-action">
                     <i>{{ c.date }}</i>
                 </div>
-                <br>
-                {% endfor %}
+                </div>
             </div>
-        </div>
-</div>
-</section>
-
-<!-- comments on jobs here -->
+            </div>
+            {% else %}
+            <div class="col s12 m7">
+                    <div class="card">
+                        <div class="card-stacked">
+                        <div class="card-content">
+                            <a href="#">{{ c.user }}</a>
+                            <p>{{ c.comment }}</p>
+                        </div>
+                        <div class="card-action">
+                            <i>{{ c.date }}</i>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+            {% endif %}
+            {% endfor %}
+    </div>
+    
 {% endblock %}
+

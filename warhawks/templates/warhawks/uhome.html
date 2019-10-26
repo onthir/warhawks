@@ -1,0 +1,105 @@
+{% extends 'warhawks/base.html' %}
+
+{% block title %}
+Home
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="row">
+        <div class="col s12 m2">
+            <h5>Profile</h5>
+            <div class="card">
+                    <div class="card-stacked">
+                    <div class="card-content">
+                        <img src="{{ profile.profile_picture.url }}" alt="" class="circle responsive-img">
+                        <a href="#">{{ profile.user.username|upper }}</a>
+                    </div>
+                    <div class="card-action">
+                            <h6 class="left-align flow-text">{{ profile.cwid }}</h6>
+                    </div>
+                    </div>
+                </div>
+        </div>
+        <div class="col s12 m5">
+            <h5>Feed</h5>
+        {% for f in feed %}
+        {% if f.get_cname == 'Job'%}
+            <div class="card">
+                <div class="card-stacked">
+                <div class="card-content">
+                    <a href="#" id="userlabel">{{ f.posted_by|upper }}</a>
+                   <a href="{% url 'main:job_details' f.slug %}"> <h6><strong>{{ f.company }}</strong></h6></a>
+                    <p>{{ f.description|truncatechars:100 }}</p>
+                    <h4><strong>${{ f.salary }}/hour</strong></h4>
+                </div>
+                <div class="card-action">
+                    <i>{{ f.posted_on }}</i>
+                </div>
+                </div>
+            </div>
+            
+            {% else %}
+            <div class="card">
+                    <div class="card-stacked">
+                    <div class="card-content">
+                        <a href="#" id="userlabel">{{ f.posted_by|upper }}</a>
+                        <a href="{% url 'main:apartment_details' f.slug %}"><h6><strong>{{ f.location }}</strong></h6></a>
+                        <img src="{{ f.picture.url }}" alt="" class="responsive-img">
+                        <p>{{ f.description|truncatechars:100 }}</p>
+                    </div>
+                    <div class="card-action">
+                        <i>{{ f.date }}</i>
+                    </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% if forloop.counter == 5 %}
+                
+                <div class="row">
+                    {% for b in blogs %}
+                        <div class="col s12 m6">
+                            <div class="card">
+                            <div class="card-image">
+                                <img src="{{ b.image.url }}">
+                            </div>
+                            <div class="card-content">
+                                   <a href="{% url 'blog:details' b.id b.slug %}"> <span class="card-title">{{ b.title }}</span></a>
+
+                                <p>{{ b.description|safe|truncatechars:70 }}</p>
+                            </div>
+                            <div class="card-action">
+                                <strong>{{ b.posted_on }} by <span id="userlabel"> {{ b.posted_by|upper }} </span></strong>
+                            </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        </div>
+                    
+                {% endif %}
+        {% endfor %}
+    </div>
+        <div class="col s12 m3">
+            <h5>Recent Blogs</h5>
+            <ul class="collection">
+
+                    {% for b in blogs %}
+                    <li class="collection-item avatar">
+                      <img src="{{ b.image.url }}" alt="{{ b.title }}" class="circle responsive-img" width="25">
+                     <a href="{% url 'blog:details' b.id b.slug %}"> <span class="title">{{ b.title }}</span></a>
+                      <p>{{ b.description|safe|truncatechars:50 }} <br>
+                         {{ b.posted_by }}
+                      </p>
+                      <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+                    </li>
+                    {% endfor %}
+                    
+                  </ul>
+                            
+                
+        </div>
+
+    </div>
+
+{% endblock %}

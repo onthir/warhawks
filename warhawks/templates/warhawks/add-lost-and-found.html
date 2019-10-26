@@ -1,0 +1,34 @@
+{% extends 'warhawks/base.html' %}
+
+{% block title %}
+Add Lost Or Found
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <h3>Add Lost Or Found</h3>
+        <form action="" method="post" enctype="multipart/form-data" id="lfform">
+            {% csrf_token %}
+            {{ form }}
+            <br>
+            <input type="submit" value="Add Lost and Found" class="waves btn">
+        </form>
+</div>
+{% block javascript %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('.datepicker');
+        var instances = M.Datepicker.init(elems, options);
+    });
+
+    // Or with jQuery
+
+    $(document).ready(function(){
+        $('.datepicker').datepicker();
+    });
+</script>
+{% endblock %}
+
+{% endblock %}

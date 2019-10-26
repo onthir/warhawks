@@ -25,7 +25,7 @@ SECRET_KEY = 'usayhfwdievr9!$^kjcw7ur_q3u6quvx$2q7x+=+@*2&j2ovdd'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '192.168.100.14', '192.168.1.108', '127.0.0.1']
 
 
 # Application definition
@@ -33,9 +33,10 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'accounts',
     'blog',
-    'ckeditor',
     'messenger',
     'warhawks',
+    'ckeditor',
+    'notification',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -63,6 +64,7 @@ TEMPLATES = [
                 (os.path.join(BASE_DIR, 'accounts')),
                 (os.path.join(BASE_DIR, 'warhawks')),
                 (os.path.join(BASE_DIR, 'messenger')),
+                (os.path.join(BASE_DIR, 'notification')),
                 (os.path.join(BASE_DIR, 'blog'))],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -142,7 +144,7 @@ CKEDITOR_CONFIGS = {
     'default': {
         'toolbar': 'Custom',
         'height': 300,
-        'width': 1200,
+        'width': 1000,
         'toolbar_Custom': [
             ['Bold', 'Italic', 'Underline'],
             ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],

@@ -14,9 +14,9 @@ class Category(models.Model):
         verbose_name_plural = 'Categories'
 
 class Blog(models.Model):
-    category = models.ForeignKey(Category, related_name='blog_category')
+    category = models.ForeignKey(Category, related_name='blog_category', on_delete=models.CASCADE)
     title = models.CharField(max_length=250)
-    posted_by = models.ForeignKey(User)
+    posted_by = models.ForeignKey(User, on_delete=models.CASCADE)
     posted_on = models.DateTimeField(auto_now_add=True)
     edited_on = models.DateTimeField(auto_now=True)
     description = RichTextField()

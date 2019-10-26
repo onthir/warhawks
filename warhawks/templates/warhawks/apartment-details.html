@@ -7,7 +7,66 @@
 
 {% block content %}
 
-<h4>Apartment details</h4>
-
-{{  apartment.description  }}
+<!-- apartments -->
+<div class="container">
+        <h5>
+            <strong>{{ apartment.location }}</strong>
+        </h5>
+        <i>{{ apartment.distance_from_university }} km from university</i>
+        <span class="badge blue white-text">${{ apartment.price }}/month</span>
+        <span class="badge red white-text">{{ apartment.a_type }}</span>
+        <br><br>
+        <img src="{{ apartment.picture.url }}" alt="" class="responsive-img">
+        <p>{{ apartment.description|linebreaks }}</p>
+        <a href="{% url 'main:edit_apartment' apartment.slug %}" class="btn yellow">Edit</a>
+        <a href="{% url 'main:edit_apartment' apartment.slug %}" class="btn red">Delete</a><br>
+        <i><strong> {{ apartment.date }} by {{ apartment.posted_by }}</strong></i>
+    </div>
+    
+    <!-- comment input form -->
+    <br> 
+        <div class="container">
+            <form action="" method="post" enctype="multipart/form-data">
+            
+            {% csrf_token %}
+                {{ form }}
+        </form>
+            </div>
+        </div>
+    <!-- comments on apartments here -->
+    <div class="container">
+            <h5>Comments</h5>
+            {% for c in comments %}
+            {% if c.id|stringformat:"i" == notif_id %}
+            <div class="col s12 m7" style="border: 2px solid teal;">
+                <div class="card">
+                    <div class="card-stacked">
+                    <div class="card-content">
+                        <a href="#">{{ c.user }}</a>
+                        <p>{{ c.comment }}</p>
+                    </div>
+                    <div class="card-action">
+                        <i>{{ c.date }}</i>
+                    </div>
+                    </div>
+                </div>
+                </div>
+                {% else %}
+                <div class="col s12 m7">
+                        <div class="card">
+                            <div class="card-stacked">
+                            <div class="card-content">
+                                <a href="#">{{ c.user }}</a>
+                                <p>{{ c.comment }}</p>
+                            </div>
+                            <div class="card-action">
+                                <i>{{ c.date }}</i>
+                            </div>
+                            </div>
+                        </div>
+                        </div>  
+                        {% endif %}      
+                {% endfor %}
+        </div>
+        
 {% endblock %}

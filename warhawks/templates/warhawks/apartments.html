@@ -7,43 +7,30 @@ Apartments
 {% block content %}
 
 <!-- apartments -->
-<section class="banner-sec">
-        <div class="container">
-                <a href="{% url 'main:add_apartment' %}" class="btn btn-danger">Add Apartment</a>
-                <br>
-            <h3>Accomodations</h3>
+<div class="container">
+    <br>
+    <a href="{% url 'main:add_apartment' %}" class="btn">Add Apartments</a>
+    <h5>Accomodations</h5>
+    <hr>
+    <div class="row">
+        {% for a in apartments %}
+        <div class="col s12 m12">
+            <!-- test -->
             <div class="row">
-                {% for a in apartments %}
-                <div class="col-md-3">
-    
-                    <div class="card">
-                        {% if a.picture %}
-                            <img src="{{ a.picture.url }}" alt="{{ a.location }}" class="img-fluid">
-                       {% else %}
-                        <img src="{% static 'images/apartment.gif' %}" alt="" class="img-fluid">
-                       {% endif %}
-                        <div class="card-img-overlay">
-                            <span class="badge badge-pill badge-danger">{{ a.a_type }}</span>
-                        </div>
-                        <div class="card-body">
-                            <div class="news-title">
-                                <h2 class=" title-small">
-                                    <a href="{% url 'main:apartment_details' a.slug %}">{{ a.location }} - {{ j.posted_by }}</a>
-                                </h2>
-                            </div>
-                            <p class="card-text">
-                                <small class="text-time">
-                                    <em>${{ a.price }} per month.</em><br>
-                                </small>
-                            </p>
-                        </div>
-                    </div>
+                <div class="col s12 m8">
+                    <h5><a href="{% url 'main:apartment_details' a.slug %}">{{ a.location }}</a></h5>
+                    <h6>{{ a.distance_from_university }} km from campus</h6>
+                    <p>{{ a.description|truncatechars:80 }}.. <a href="{% url 'main:apartment_details' a.slug %}">Read More</a></p>
                 </div>
-                {% endfor %}
-    
+
+                <div class="col s12 m4">
+                   <a href="{% url 'main:apartment_details' a.slug %}"> <img src="{{ a.picture.url }}" alt="" class="responsive-img" width="250px;"></a>
+                </div>
             </div>
+            <hr>
         </div>
-    </section>
-    
+        {% endfor %}
+    </div>
+</div>
 
 {% endblock %}

@@ -3,31 +3,13 @@
 {% block content %}
 
 <div class="container">
-    <h3 class="text-center">Register New Account</h3>
+    <h5 class="text-center">Register New Account</h5>
     <div class="form-group">
         <form action="" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form }}
             <br>
-            <!-- profile terms -->
-            <!-- full_name -->
-            <label for="name">Full Name</label>
-            <input type="text" class="form-control" name="full_name">
-
-
-            <label for="CWID">CWID</label>
-            <input type="text" class="form-control" name="cwid">
-            
-            <!-- date of birth -->
-            <label for="dob">Date Of Birth</label>
-            <input type="date" class="form-control" name="dob">
-            <!-- class of -->
-            <label for="class_of">Class Of</label>
-            <input type="text" class="form-control" name="class_of">
-            <!-- address -->
-            <label for="address">Address</label>
-            <input type="text" class="form-control" name="address">
-
+           
             
             <input type="submit" class="btn btn-danger">
             <div class="text-mute">Already a member? <a href="{% url 'accounts:login' %}">Login</a></div>

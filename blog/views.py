@@ -2,9 +2,19 @@ from django.shortcuts import render, redirect
 from .models import *
 from django.contrib.auth.decorators import login_required
 from .forms import *
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 # Create your views here.
 def home(request):
-    blogs = Blog.objects.all().order_by('-posted_on')
+    blogs_all = Blog.objects.all().order_by('-posted_on')
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(blogs_all, 10)
+    try:
+        blogs = paginator.page(page)
+    except PageNotAnInteger:
+        blogs = paginator.page(1)
+    except EmptyPage:
+        blogs = paginator.page(paginator.num_pages)
     context = {
         'blogs': blogs,
         'nbar': 'blog'

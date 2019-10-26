@@ -6,10 +6,56 @@ Lost And Found
 
 
 {% block content %}
-
 <div class="container">
-    <h1>Lost And Found</h1>
-    
-</div>
+  <br>
+  <a href="{% url 'main:add_lost_and_found' %}" class="btn">Add Lost Or Found Report</a>
+  <div class="row">
+    <div class="col s12 m6" style="background: black; color: white; padding: 5px;">
+      <h5>Lost reports</h5>
+      {% for l in lost_items %}
+      <div class="row">
+          <div class="col s12 m8">
+              <h5><a href="{% url 'main:lost_and_found_details' l.slug %}">{{ l.title }}</a></h5>
+              <h6><strong>{{ l.posted_by }}</strong></h6>
+              <p>{{ l.description|truncatechars:80 }}.. <a href="{% url 'main:lost_and_found_details' l.slug %}">Read More</a></p>
+          </div>
 
+          <div class="col s12 m4">
+            {% if l.image %}
+             <a href="#"> <img src="{{ l.image.url }}" alt="" class="responsive-img" width="250px;"></a>
+            {% else %}
+            <i>No image</i>
+             {% endif %}
+            </div>
+      </div>
+      <hr>
+      {% endfor %}
+    </div>
+    <div class="col s12 m6">
+      <h5>Found Reports</h5>
+      {% if found_items %}
+      {% for l in found_items %}
+      <div class="row">
+          <div class="col s12 m8">
+              <h5><a href="{% url 'main:lost_and_found_details' l.slug %}">{{ l.title }}</a></h5>
+              <h6><strong>{{ l.posted_by }}</strong></h6>
+              <p>{{ l.description|truncatechars:80 }}.. <a href="{% url 'main:lost_and_found_details' l.slug %}">Read More</a></p>
+          </div>
+
+          <div class="col s12 m4">
+            {% if l.image %}
+             <a href="#"> <img src="{{ l.image.url }}" alt="" class="responsive-img" width="250px;"></a>
+            {% else %}
+            <i>No image</i>
+             {% endif %}
+            </div>
+      </div>
+      <hr>
+      {% endfor %}
+      {% else %}
+      <i class="center-align">No Found Reports filed.</i>
+      {% endif %}
+    </div>
+  </div>
+</div>
 {% endblock %}

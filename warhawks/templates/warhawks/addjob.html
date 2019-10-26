@@ -1,21 +1,21 @@
 {% extends 'warhawks/base.html' %}
 
 {% block title %}
-Add Job
+{{ action }} Job
 {% endblock %}
 
 {% block content %}
-
+<div  style="top: 0; background: linear-gradient(110deg, #fdcd3b 60%, #ffed4b 60%);">
 <div class="container">
-    <h3>Add Jobs</h3>
-    <div class="form-group">
-        <form action="" method="post" enctype="multipart/form-data">
+    <h3>{{ action }} Job</h3>
+        <form action="" method="POST" enctype="multipart/form-data" id="jobform">
             {% csrf_token %}
             {{ form }}
             <br>
-            <input type="submit" class="btn btn-danger" value="Add Job">
+            <input type="submit" value="{{ action }} Job" class="btn">
+            <br>
+            <br>
         </form>
-    </div>
 </div>
-
+</div>
 {% endblock %}

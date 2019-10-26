@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-from .forms import UserRegistrationForm, ProfileForm, EditProfileForm
+from .forms import UserRegistrationForm, ProfileForm
 from .models import Profile
-
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 def accounts_home(request):
     pass
@@ -22,26 +23,61 @@ def register_account(request):
             if form.is_valid():
                 credentials = form.save()
 
-                # create profile
-                
-                dob = request.POST.get('dob')
-                address = request.POST.get('address')
-                class_of = request.POST.get('class_of')
-                cwid = request.POST.get('cwid')
-                full_name = request.POST.get('full_name')
-
-                print(dob)
                 # get username and password to login the user
                 username = form.cleaned_data['username']
                 password = form.cleaned_data['password1']
 
                 new_user = authenticate(username=username, password=password)
                 login(request, new_user)
-                return redirect("main:home")
+                return redirect("accounts:complete_profile")
         else:
             form = UserRegistrationForm()
         return render(request, 'accounts/register.html', {'form': form})
 
+"""
+COMPLETE USER PROFILE OR EDIT PROFILE BASED ON THE LOGIN OR REGISTER 
+"""
+def complete_profile(request):
+    if request.user.is_authenticated:
+        # get profile
+        user = User.objects.get(username=request.user)
+        try:
+            profile = Profile.objects.get(user=user)
+            if profile.started == True:
+                return redirect("accounts:edit_profile")
+            return redirect("accounts:edit_profile")
+
+        except:
+            pass
+        msg = 'Complete your profile'
+        # get profile form
+        if request.method == 'POST':
+            form = ProfileForm(request.POST, request.FILES)
+            if form.is_valid():
+                pf = form.save(commit=False)
+                pf.user = user
+                pf.started = True
+                pf.save()
+                return redirect("main:home")
+        else:
+            form = ProfileForm()
+        return render(request, 'accounts/cprofile.html', {'form': form, 'msg': msg})
+
+@login_required
+def edit_profile(request):
+    user = User.objects.get(username=request.user)
+    profile = Profile.objects.get(user=user)
+
+    # edit
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            pf = form.save()
+            messages.success(request, 'Profile Updated Successfully')
+
+    else:
+        form = ProfileForm(instance=profile)
+    return render(request, 'accounts/cprofile.html', {'form': form, 'msg':'Update Profile'})
 '''
 LOGIN USER 
 LOGIN USER WITH THE DEFAULT USER MODEL AND THE AUTHENTICATE MODEL
@@ -70,22 +106,19 @@ def logout_user(request):
     logout(request)
     return redirect("accounts:login")
 
-# profile for the user extended with the user model
-def complete_profile(request):
+"""
+DISPLAY USER PROFILE WITH CONTENTS LIKE PROFILE PICTURE, ID(PRIVATE), CWID(PRIVATE), POSTED CONTENT
+
+"""
+def display_profile(request, user):
     if request.user.is_authenticated:
-        user = User.objects.get(username=request.user)
-        if request.method == 'POST':
-            form = ProfileForm(request.POST, request.FILES)
-            if form.is_valid():
-                profile = form.save(commit=False)
-                profile.user = request.user
-                profile.started = True
-                profile.save()
+        # get user and profile
+        user = User.objects.get(username=user)
+        profile = Profile.objects.get(user=user)
 
-                return redirect("main:home")
-        else:
-            form = ProfileForm()
-        return render(request, 'accounts/complete-profile.html', {'form': form})
-        
-
-        
+        # content for the logged in user
+        context = {
+            'user': user,
+            'profile': profile
+        }
+        return render(request, 'accounts/profile.html', context)

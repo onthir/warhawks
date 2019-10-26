@@ -1,112 +1,220 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>
-    {% block title %}
-        Home
-    {% endblock %}
-     | Warhawks
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta charset="utf-8">
+  <title>
+    {% block title %} Home {% endblock %} | Warhawks
   </title>
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 
-    <!------ Include the above in your HEAD tag ---------->
-    {% load staticfiles %}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
-    <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
-    crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css?family=Francois+One|Signika:700" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
-  <!-- ckeditor css hilighter.js -->
-  <link rel="stylesheet"
-  href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
-  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-  </head>
-  <body>
-    <div class="small-top">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4 date-sec">
-            <div id="Date"></div>
-          </div>
-                <div class="col-lg-3 offset-lg-5">
-            <div class="social-icon"> <a target="_blank" href="#" class=" fa fa-facebook">
+</head>
+  {% load staticfiles %}
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="{% static 'css/materialize.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="{% static 'css/style.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
 
-            </a> <a target="_blank" href="#" class=" fa fa-twitter"></a>
-             <a target="_blank" href="#" class=" fa fa-google-plus"></a
-              > <a target="_blank" href="#" class=" fa fa-linkedin"></a> 
-              <a target="_blank" href="#" class=" fa fa-youtube"></a>
-              {% if not request.user.is_authenticated %}<a href="{% url 'accounts:login' %}">Login</a><a href="{% url 'accounts:register' %}">Register</a>
-            {% else %} <a href="{% url 'accounts:logout' %}">Logout</a> {% endif %} </div>
+  <link href="https://fonts.googleapis.com/css?family=Francois+One|Signika:700" rel="stylesheet">
+
+
+</head>
+
+<body>
+
+    <nav class="white" role="navigation">
+        <div class="nav-wrapper container">
+          <a id="logo-container" href="{% url 'main:home' %}" class="brand-logo"><img class="responsive-img" src="{% static 'images/logo.jpg' %}" alt="" width="40px;"></a>
+          <ul class="right hide-on-med-and-down">
+            <li><a href="{% url 'main:job_listings' %}">Jobs</a></li>
+            <li><a href="{% url 'main:apartments' %}">Apartments</a></li>
+            <li><a href="{% url 'main:lost_and_found' %}">Lost And Found</a></li>
+            <li><a href="{% url 'blog:home' %}">Blog</a></li>
+            <li><a href="{% url 'main:study_materials' %}">Study Materials</a></li>
+            {% if request.user.is_authenticated %}
+            <li><a href="{% url 'accounts:display_profile' request.user %}">{{ request.user }}</a></li>
+
+           <li><a class='dropdown-trigger' href='#' data-target='dropdown1'>
+            Notifications
+
+             <i class="material-icons left"> notifications</i>
+             {% if total_not_count %}
+             {{ total_not_count }} 
+             {% endif %}</a></li>
+
+         
+            <!-- NOTIFICATIONS -->
+            <ul id='dropdown1' class='dropdown-content'>
+              <!-- job notifications -->
+              {% if job_notifications %}
+                <h5 class=" black-text center-align">Job Notifications</h5>
+                {% for j in job_notifications %}
+                <li><img src="{{ profile.profile_picture.url }}" alt="{{request.user}}" class="circle responsive-img" width="30px;"><a href="{% url 'main:read_job_notifiation' j.id j.job.slug %}">{{ j.message }} - {{ j.date|timesince }} ago</a>
+                </li>
+                {% endfor %}
+                {% else %}
+                <h6 class=" black-text center-align">No new job notifications</h6>
+              {% endif %}
+              <!-- apartment notifications -->
+                <li class="divider" tabindex="-1"></li>
+                {% if apartment_notifications %}
+                <h5 class=" black-text center-align">Apartment Notifications</h5>
+                {% for a in apartment_notifications %}
+                <li><img src="{{ profile.profile_picture.url }}" alt="{{request.user}}" class="responsive-img" width="20px;"> <a href="{% url 'main:read_apartment_notifiation' a.id a.apartment.slug %}">{{ a.message }} - {{ a.date|timesince }} ago</a>
+                </li>
+                {% endfor %}
+                {% else %}
+                <h6 class=" black-text center-align">No new apartment notifications</h6>
+              {% endif %}
+              <li class="divider" tabindex="-1"></li>
+              <!-- lost and found notitications -->
+              {% if lf_notifications %}
+                <h5 class="black-text center-align">Lost & Found Notifications</h5>
+                  {% for a in lf_notifications %}
+                    <li><i class="material-icons left"> notifications</i><a href="{% url 'main:read_lf_notifiation' a.id a.lf.slug %}">{{ a.message }} - {{ a.date|timesince }} ago</a>
+                    </li>
+                  {% endfor %}
+              {% else %}
+              <h6 class=" black-text center-align">No new lost & found notifications</h6>
+            {% endif %}
+              </ul>
+              <!-- END HERE NOTIFICATIONS -->
+            <li><a href="{% url 'accounts:logout' %}" class="waves-effect waves-light btn">Logout</a></li>
+            {% else %}
+            <li><a href="{% url 'accounts:login' %}" class="waves-effect waves-light btn">Login</a></li>
+            <li><a href="{% url 'accounts:register' %}" class="waves-effect waves-light btn">Register</a></li>
+            {% endif %}
+          </ul>
+    
+          <ul id="nav-mobile" class="sidenav">
+              <li><a href="{% url 'main:job_listings' %}">Jobs</a></li>
+              <li><a href="{% url 'main:apartments' %}">Apartments</a></li>
+              <li><a href="{% url 'main:lost_and_found' %}">Lost And Found</a></li>
+              <li><a href="{% url 'blog:home' %}">Blog</a></li>
+              <li><a href="{% url 'main:study_materials' %}">Study Materials</a></li>
+              {% if request.user.is_authenticated %}
+              <li><a href="{% url 'accounts:display_profile' request.user %}">{{ request.user }}</a></li>
+  
+             <li>     <a class='dropdown-trigger btn' href='#' data-target='dropdown1'>
+              Notifications
+  
+               <i class="material-icons left"> notifications</i>
+               {% if total_not_count %}
+               {{ total_not_count }} 
+               {% endif %}</a></li>
+  
+           
+              <!-- NOTIFICATIONS -->
+              <ul id='dropdown1' class='dropdown-content'>
+                <!-- job notifications -->
+                {% if job_notifications %}
+                  <h5 class=" black-text center-align">Job Notifications</h5>
+                  {% for j in job_notifications %}
+                  <li><a href="{% url 'main:read_job_notifiation' j.id j.job.slug %}">{{ j.message }} - {{ j.date|timesince }} ago</a>
+                  </li>
+                  {% endfor %}
+                  {% else %}
+                  <h6 class=" black-text center-align">No new job notifications</h6>
+                {% endif %}
+                <!-- apartment notifications -->
+                  <li class="divider" tabindex="-1"></li>
+                  {% if apartment_notifications %}
+                  <h5 class=" black-text center-align">Apartment Notifications</h5>
+                  {% for a in apartment_notifications %}
+                  <li><a href="{% url 'main:read_apartment_notifiation' a.id a.apartment.slug %}">{{ a.message }} - {{ a.date|timesince }} ago</a>
+                  </li>
+                  {% endfor %}
+                  {% else %}
+                  <h6 class=" black-text center-align">No new apartment notifications</h6>
+                {% endif %}
+                <li class="divider" tabindex="-1"></li>
+                <!-- lost and found notitications -->
+                {% if lf_notifications %}
+                  <h5 class="black-text center-align">Lost & Found Notifications</h5>
+                    {% for a in lf_notifications %}
+                      <li><i class="material-icons left"> notifications</i><a href="{% url 'main:read_lf_notifiation' a.id a.lf.slug %}">{{ a.message }} - {{ a.date|timesince }} ago</a>
+                      </li>
+                    {% endfor %}
+                {% else %}
+                <h6 class=" black-text center-align">No new lost & found notifications</h6>
+              {% endif %}
+                </ul>
+                <!-- END HERE NOTIFICATIONS -->
+              <li><a href="{% url 'accounts:logout' %}" class="waves-effect waves-light btn">Logout</a></li>
+  
+              {% else %}
+            <li><a href="{% url 'accounts:login' %}" class="waves-effect waves-light btn">Login</a></li>
+            <li><a href="{% url 'accounts:register' %}" class="waves-effect waves-light btn">Register</a></li>
+            {% endif %}
+          </ul>
+          <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        </div>
+      </nav>
+
+      <div class="container">
+      {% if messages %}
+      <ul class="message">
+        {% for message in messages %}
+          <li class="center-align {{ message.tags }}">
+            {{ message |safe }}
+            <a href="#" class="close"></a>
+          </li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </div>
+      <!-- <div class="container">
+          <form action="" method="get" >
+              <input type="hidden" name="notif">
+          </form>
+      </div> -->
+  {% block content %}
+  
+  {% endblock %}
+  <footer class="page-footer" style="background: #292B2B;">
+      <div class="container">
+        <div class="row">
+          <div class="col l6 s12">
+            <h5 class="white-text">ULM Warhawks</h5>
+            <p class="grey-text text-lighten-4">We are a team of college students working on this project like it's our full time job. Any amount would help support and continue development on this project and is greatly appreciated.</p>
+            <a href="#" class="btn">Donate Us</a>
           </div>
+          <div class="col l6 s12">
+            <form action="{% url 'main:home' %}" method="post" enctype="multipart/form-data" id="contactForm">
+
+              {% csrf_token %}
+              <label class="white-text" for="email">Email</label>
+              <input type="email" placeholder="Enter Email" class="white validate" name="email">
+
+              <label class="white-text" for="fullname">Full Name</label>
+              <input type="text" placeholder="Enter your Name" class="white" name="full_name">
+
+              <label class="white-text" for="message">Message</label>
+              <textarea id="textarea1" class="white materialize-textarea" name="msg"></textarea>
+
+              <input type="submit" value="Send Message" onclick="M.toast({html: 'Message Sent Successfully'})" class="btn">
+            </form>
           </div>
-              </div>
+        </div>
       </div>
-            <div class="top-head left">
+      <div class="footer-copyright">
         <div class="container">
-                <div class="row">
-                  <div class="col-md-6 col-lg-4">
-                          <h1>ULM Warhawks<small>Get Everything Done</small></h1>
-                        </div>
-                  <div class="col-md-6 col-lg-3 ml-auto admin-bar hidden-sm-down">
-                          <nav class="nav nav-inline">
-                            {% if request.user.is_authenticated %}
-                            <img class="img-fluid rounded-circle" src="{{ profile.profile_picture.url }}"  </nav>
-                            
-                            {% else %}
-                             <a href="{% url 'accounts:register' %}">Register</a>
-                             <a href="{% url 'accounts:login' %}">Login</a> 
-                             {% endif %}
-                        </div>
-          </div>
-              </div>
+        Made By <a class="brown-text text-lighten-3" target="_blank" href="https://bibekbhandari.herokuapp.com/">Bibek Bhandari</a>
+        </div>
       </div>
-          </header>
-    <section class="top-nav">
+    </footer>
+  
+  
+  <!--  Scripts-->
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="{% static 'js/materialize.min.js' %}"></script>
 
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#">Navbar</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav">
-      <li class="{% if nbar == 'home' %}nav-item active {% else %}nav-item{% endif %}">
-        <a class="nav-link" href="{% url 'main:home' %}">Home <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="{% if nbar == 'job_listings' %}nav-item active {% else %}nav-item{% endif %}">
-        <a class="nav-link" href="{% url 'main:job_listings' %}">Job Listings</a>
-      </li>
-      <li class="{% if nbar == 'apartments' %}nav-item active {% else %}nav-item{% endif %}">
-        <a class="nav-link" href="{% url 'main:apartments' %}">Accomodation</a>
-      </li>
-      <li class="{% if nbar == 'lost_and_found' %}nav-item active {% else %}nav-item{% endif %}">
-        <a class="nav-link" href="{% url 'main:lost_and_found' %}">Lost And Found</a>
-      </li>
-      <li class="{% if nbar == 'study_materials' %}nav-item active {% else %}nav-item{% endif %}">
-        <a class="nav-link" href="{% url 'main:study_materials' %}">Study Materials</a>
-      </li>
-      <li class="{% if nbar == 'blog' %}nav-item active {% else %}nav-item{% endif %}">
-        <a class="nav-link" href="{% url 'blog:home' %}">Blog</a>
-      </li>
-      <li class="{% if nbar == 'travel_with_a_friend' %}nav-item active {% else %}nav-item{% endif %}">
-        <a class="nav-link" href="#">Travel With a Friend</a>
-      </li>
-      <li class="{% if nbar == 'contact_us' %}nav-item active {% else %}nav-item{% endif %}">
-        <a class="nav-link" href="#">Contact Us</a>
-      </li>
-    </ul>
-  </div>
-</nav>
-    </section>
-    {% block content %}
+  <script src="{% static 'js/init.js' %}"></script>
+  <script src="{% static 'js/formalize.js' %}"></script>
 
-    {% endblock %}
+  <script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+  <script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
 
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+
   </body>
-  </html>
+</html>

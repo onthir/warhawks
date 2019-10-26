@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.text import slugify
+import datetime
 
 class job_category(models.Model):
     category = models.CharField(max_length=50)
@@ -9,9 +10,9 @@ class job_category(models.Model):
         return self.category
 
 class Job(models.Model):
-    j_type = models.ForeignKey(job_category)
+    j_type = models.ForeignKey(job_category, on_delete=models.CASCADE)
     company = models.CharField(max_length=500)
-    posted_by = models.ForeignKey(User)
+    posted_by = models.ForeignKey(User, on_delete=models.CASCADE)
     posted_on = models.DateTimeField(auto_now_add=True)
     edited_on = models.DateTimeField(auto_now=True)
     position = models.CharField(max_length=500)
@@ -37,6 +38,15 @@ class Job(models.Model):
         if not self.slug:
             self.slug = self._get_unique_slug()
         super().save()
+    
+    @property
+    def date(self):
+          return self.posted_on
+
+    # get class name for DLT
+    def get_cname(self):
+        class_name = 'Job'
+        return class_name 
 # comments on job
 class JobComment(models.Model):
     job = models.ForeignKey(Job, on_delete=models.CASCADE)
@@ -57,10 +67,10 @@ class a_type(models.Model):
 
 # apartments
 class Apartment(models.Model):
-    posted_by = models.ForeignKey(User, default=None)
+    posted_by = models.ForeignKey(User, default=None, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)
     edit = models.DateTimeField(auto_now=True)
-    a_type = models.ForeignKey(a_type)
+    a_type = models.ForeignKey(a_type, on_delete=models.CASCADE)
     location = models.CharField(max_length=500)
     distance_from_university = models.FloatField()
     price = models.FloatField()
@@ -83,7 +93,10 @@ class Apartment(models.Model):
         if not self.slug:
             self.slug = self._get_unique_slug()
         super().save()
-
+    # get class name for DLT
+    def get_cname(self):
+        class_name = 'Apartment'
+        return class_name 
 # comments on apartment
 class ApartmentComment(models.Model):
     apartment = models.ForeignKey(Apartment, on_delete=models.CASCADE)
@@ -109,7 +122,7 @@ class StudyMaterial(models.Model):
     date                 = models.DateTimeField(auto_now_add=True)
     file_content         = models.FileField()
     downloads            = models.IntegerField(default=0)
-
+    preview_picture      = models.ImageField(default=None, null=True, blank=True)
     def __str__(self):
         return self.title
 
@@ -130,6 +143,7 @@ class LostAndFound(models.Model):
     description = models.TextField(max_length=1000)
     image = models.ImageField(null=True, blank=True)
     posted_on = models.DateTimeField(auto_now_add=True)
+    found_or_lost_on = models.DateField(default=datetime.datetime.now())
     resolved = models.BooleanField(default=False)
     hits = models.IntegerField(default=0)
     slug = models.SlugField(max_length=500, default=None)
@@ -150,3 +164,28 @@ class LostAndFound(models.Model):
         if not self.slug:
             self.slug = self._get_unique_slug()
         super().save()
+
+# comments on lost and found
+class LFComment(models.Model):
+    lf = models.ForeignKey(LostAndFound, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    date = models.DateTimeField(auto_now_add=True)
+    edit = models.DateTimeField(auto_now=True)
+    comment = models.TextField(max_length=500)
+
+    def __str__(self):
+        return self.comment
+
+
+# feedbacks
+"""
+FEEDBACKS FROM THE USERS GOES HERE
+"""
+class Feedback(models.Model):
+    email = models.EmailField(max_length=250)
+    full_name = models.CharField(max_length=250)
+    feedback = models.TextField(max_length=500)
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.email

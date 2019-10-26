@@ -1,111 +1,97 @@
 {% extends 'warhawks/base.html' %} {% load staticfiles %} {% block content %}
 
-<!--job listings  -->
-<section class="banner-sec">
-    <div class="container">
-        <h3>Job Listings</h3>
-        <div class="row">
-            {% for j in jobs %}
-            <div class="col-md-3">
-
-                <div class="card">
-                    <img class="img-fluid" src="{% static 'images/jobs.png' %}" alt="">
-                    <div class="card-img-overlay">
-                        <span class="badge badge-pill badge-danger">{{ j.j_type }}</span>
-                    </div>
-                    <div class="card-body">
-                        <div class="news-title">
-                            <h2 class=" title-small">
-                                <a href="#">{{ j.company }} - {{ j.position }}</a>
-                            </h2>
-                        </div>
-                        <p class="card-text">
-                            <small class="text-time">
-                                <em>${{ j.salary }} /hr</em><br>
-                                <em>{{ j.hits }} hits</em>
-                            </small>
-                        </p>
-                    </div>
-                </div>
+<div id="index-banner" class="parallax-container">
+        <div class="section no-pad-bot">
+          <div class="container">
+            <br><br>
+            <h1 class="header center red-text text-lighten-2" id="banner">ULM WARHAWKS</h1>
+            <div class="row center">
+              <h5 class="header col s12 dark">Get Everything Done</h5>
             </div>
-            {% endfor %}
-
-        </div>
-    </div>
-</section>
-
-<!-- apartments -->
-<section class="banner-sec">
-        <div class="container">
-            <h3>Accomodations</h3>
-            <div class="row">
-                {% for a in apartments %}
-                <div class="col-md-3">
+            <div class="row center">
+              <a href="{% url 'accounts:register' %}" id="download-button" class="btn-large waves-effect waves-light teal lighten-1">Register Today</a>
+            </div>
+            <br><br>
     
-                    <div class="card">
-                        {% if a.picture %}
-                            <img src="{{ a.picture.url }}" alt="{{ a.location }}" class="img-fluid">
-                       {% else %}
-                        <img src="{% static 'images/apartment.gif' %}" alt="" class="img-fluid">
-                       {% endif %}
-                        <div class="card-img-overlay">
-                            <span class="badge badge-pill badge-danger">{{ a.a_type }}</span>
-                        </div>
-                        <div class="card-body">
-                            <div class="news-title">
-                                <h2 class=" title-small">
-                                    <a href="#">{{ a.location }} - {{ j.position }}</a>
-                                </h2>
-                            </div>
-                            <p class="card-text">
-                                <small class="text-time">
-                                    <em>${{ a.price }} per month.</em><br>
-                                </small>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
+          </div>
+        </div>
+        <div class="parallax"><img src="{% static 'images/background1.jpg' %}" alt="Unsplashed background img 1"></div>
+      </div>
     
+    
+      <div class="container">
+        <div class="section">
+    
+          <!--   Icon Section   -->
+          <div class="row">
+            <div class="col s12 m4">
+              <div class="icon-block">
+                <h2 class="center brown-text"><i class="material-icons">attach_money</i></h2>
+                <h5 class="center">Part Time and Full Time Jobs</h5>
+    
+                <p class="light">We display all the relevant part time, full time as well as internship jobs posted by the user. Jobs will mostly be near the university area posted by the university students.</p>
+              </div>
             </div>
-        </div>
-    </section>
-
-<!-- photo carousel -->
-
-<!-- recent blog posts -->
-<section class="banner-sec">
-    <div class="container">
-        <h3>Recent Blogs</h3>
-        <div class="row">
-            {% for r in four_blogs %}
-            <div class="col-md-3">
-                <div class="card">
-                    <img class="img-fluid" src="{{ r.image.url }}" alt="">
-                    <div class="card-img-overlay">
-                        <span class="badge badge-pill badge-danger">{{ r.category }}</span>
-                    </div>
-                    <div class="card-body">
-                        <div class="news-title">
-                            <h2 class=" title-small">
-                                <a href="#">{{ r.title }}</a>
-                            </h2>
-                            <p>{{ r.description |safe|truncatechars:150 }}</p>
-                        </div>
-                        <p class="card-text">
-                            <strong>By: <i>{{ r.posted_by }}</i></strong>
-                            <small class="text-time">
-                                <em>{{ r.posted_on |timesince }}</em>
-                            </small>
-                        </p>
-                    </div>
-                </div>
-
+    
+            <div class="col s12 m4">
+              <div class="icon-block">
+                <h2 class="center brown-text"><i class="material-icons">home</i></h2>
+                <h5 class="center">Accomodations</h5>
+    
+                <p class="light">Users will be able to post apartments, houses for students near the university area. Students can also take the advantage of getting roommates for their apartment or house.</p>
+              </div>
             </div>
-            {% endfor %}
-
+    
+            <div class="col s12 m4">
+              <div class="icon-block">
+                <h2 class="center brown-text"><i class="material-icons">laptop_windows
+                </i></h2>
+                <h5 class="center">Study Materials</h5>
+    
+                <p class="light">Books, Notes or Question papers, students can now upload all these materials so that other students can learn from the free resources uploaded in the website.</p>
+              </div>
+            </div>
+          </div>
+    
         </div>
-    </div>
-</section>
+      </div>
+    
+    
+      <div class="parallax-container valign-wrapper">
+        <div class="section no-pad-bot">
+          <div class="container">
+            <div class="row center">
+              <h5 class="header col s12 light">An Initiative to Get Everything Done For Students</h5>
+            </div>
+          </div>
+        </div>
+        <div class="parallax"><img src="{% static 'images/2.jpg' %}" alt="Unsplashed background img 2"></div>
+      </div>
+    
+      <div class="container">
+        <div class="section">
+    
+          <div class="row">
+            <div class="col s12 center">
+              <h3><i class="mdi-content-send brown-text"></i></h3>
+              <h4>Who are we?</h4>
+              <p class="left-align light">We are a group of a small team with tech enthusiasts. We are the students of University of Losuisiana at Monroe dedicated to provide assistance to the students regarding jobs, aparments or study materials. </p>
+            </div>
+          </div>
+    
+        </div>
+      </div>
+    
+    
+      <div class="parallax-container valign-wrapper">
+        <div class="section no-pad-bot">
+          <div class="container">
+            <div class="row center">
+              <h5 class="header col s12 light">A modern responsive front-end framework based on Material Design</h5>
+            </div>
+          </div>
+        </div>
+        <div class="parallax"><img src="{% static 'images/1.jpg' %}" alt="Unsplashed background img 3"></div>
+      </div>
 
 {% endblock %}

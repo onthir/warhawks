@@ -21,25 +21,9 @@ class ProfileForm(forms.ModelForm):
     full_name = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
     address = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
     cwid = forms.CharField(widget=forms.NumberInput(attrs={'class':'form-control', 'type': 'number'}))
-    dob = forms.DateField(widget = forms.SelectDateWidget(attrs={'class': 'form-group form-control col-sm-3'}))
+    dob = forms.DateField(widget = forms.SelectDateWidget(attrs={'class': 'browser-default'}))
     class_of = forms.CharField(widget=forms.NumberInput(attrs={'class':'form-control', 'type': 'number'}))
-    gender = forms.ChoiceField(choices=CHOICE, widget=forms.Select(attrs={'class': 'form-control col-sm-3',}))
+    gender = forms.ChoiceField(choices=CHOICE, widget=forms.Select(attrs={'class': 'browser-default',}))
     class Meta:
         model = Profile
         fields = ('full_name', 'dob', 'address', 'cwid', 'class_of', 'gender', 'profile_picture', 'scanned_id')
-
-class EditProfileForm(forms.ModelForm):
-    CHOICE = (
-        ('Male', 'Male'),
-        ('Female', 'Female')
-    )
-    full_name = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
-    address = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
-    cwid = forms.CharField(widget=forms.NumberInput(attrs={'class':'form-control', 'type': 'number'}))
-    dob = forms.DateField(widget = forms.SelectDateWidget(attrs={'class': 'form-group form-control col-sm-3'}))
-    class_of = forms.CharField(widget=forms.NumberInput(attrs={'class':'form-control', 'type': 'number'}))
-    gender = forms.ChoiceField(choices=CHOICE, widget=forms.Select(attrs={'class': 'form-control col-sm-3',}))
-    
-    class Meta:
-        model = Profile
-        fields = ('full_name', 'dob', 'address', 'cwid', 'class_of', 'gender')
