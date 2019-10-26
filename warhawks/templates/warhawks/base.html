@@ -34,7 +34,7 @@
             {% if request.user.is_authenticated %}
             <li><a href="{% url 'accounts:display_profile' request.user %}">{{ request.user }}</a></li>
 
-           <li><a class='dropdown-trigger' href='#' data-target='dropdown1'>
+           <li><a class='dropdown-trigger' href='#' data-target='dropdown2'>
             Notifications
 
              <i class="material-icons left"> notifications</i>
@@ -44,7 +44,7 @@
 
          
             <!-- NOTIFICATIONS -->
-            <ul id='dropdown1' class='dropdown-content'>
+            <ul id='dropdown2' class='dropdown-content'>
               <!-- job notifications -->
               {% if job_notifications %}
                 <h5 class=" black-text center-align">Job Notifications</h5>
