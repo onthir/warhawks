@@ -1,1 +1,1 @@
-web: gunicorn --pythonpath ulmlife.wsgi --log-file -
+web: gunicorn ulmlife.wsgi --log-file -
