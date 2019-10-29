@@ -25,7 +25,7 @@ SECRET_KEY = 'usayhfwdievr9!$^kjcw7ur_q3u6quvx$2q7x+=+@*2&j2ovdd'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '192.168.100.14', '192.168.1.108', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '192.168.100.14', '192.168.1.108', '127.0.0.1', "ulmlife.herokuapp.com"]
 
 
 # Application definition
